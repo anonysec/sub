@@ -27,8 +27,8 @@ This project now includes:
 ## Ticket flow
 
 - User opens `/ticket.php` and submits message.
-- Tickets are appended to `data/tickets.jsonl`.
-- Admin reads tickets at `/tickets.php`.
+- Tickets are stored per user in `data/tickets/<user_id>.jsonl`.
+- Admin reads tickets at `/tickets.php` and can filter by user id.
 
 ## Note
 
@@ -50,3 +50,16 @@ Then open:
 - `http://127.0.0.1:8080/portal.php` (hidden portal entry; add `?k=...` if `ACCESS_KEY` is enabled)
 - `http://127.0.0.1:8080/ticket.php` (offline ticket form)
 
+
+
+## Ticket storage model
+
+Tickets are stored **per user id** under `data/tickets/<user_id>.jsonl`. Admin can filter tickets by `user_id` in `/tickets.php`.
+
+## UI
+
+All pages now use a modern dark/night style via `public/assets/style.css`.
+
+## Telegram
+
+Support contact is displayed in ticket page: `https://t.me/imKoris`.
