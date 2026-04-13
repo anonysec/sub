@@ -33,3 +33,20 @@ This project now includes:
 ## Note
 
 For production, use reverse proxy rate-limits, WAF, firewall allow-list, and monitor logs.
+
+
+## Local preview
+
+Yes. You can preview locally with PHP built-in server:
+
+```bash
+cp .env.example .env
+./preview.sh 8080
+```
+
+Then open:
+
+- `http://127.0.0.1:8080/` (fake public page)
+- `http://127.0.0.1:8080/portal.php` (hidden portal entry; add `?k=...` if `ACCESS_KEY` is enabled)
+- `http://127.0.0.1:8080/ticket.php` (offline ticket form)
+
