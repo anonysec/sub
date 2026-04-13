@@ -24,6 +24,11 @@ function loadEnv(string $path): array
 
 function cfg(string $key, ?string $default = null): ?string
 {
+    $fromEnv = getenv($key);
+    if ($fromEnv !== false && $fromEnv !== '') {
+        return (string)$fromEnv;
+    }
+
     static $env = null;
     if ($env === null) {
         $env = loadEnv(__DIR__ . '/../.env');

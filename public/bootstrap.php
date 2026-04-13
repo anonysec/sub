@@ -13,6 +13,13 @@ header('X-Content-Type-Options: nosniff');
 header('Referrer-Policy: no-referrer');
 header("Content-Security-Policy: default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self';");
 
+
+$sessionDir = __DIR__ . '/../tmp/sessions';
+if (!is_dir($sessionDir)) {
+    mkdir($sessionDir, 0700, true);
+}
+session_save_path($sessionDir);
+
 session_name('portal_sess');
 session_start([
     'cookie_httponly' => true,

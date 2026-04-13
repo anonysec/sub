@@ -1,65 +1,42 @@
-# x-ui / 3x-ui PHP portal (admin + user)
+# x-ui / 3x-ui PHP portal (cPanel-friendly)
 
-This project now includes:
+You can run this on **shared hosting with cPanel** (no VPS required).
 
-- Fake public site (`/`) + hidden portal login.
-- Admin and user pages for subscription management.
-- Node status/load-balance dashboard.
-- Optional Iran RSS widget.
-- **Offline ticket system** (`/ticket.php` for users, `/tickets.php` for admin).
+## cPanel deployment (recommended)
 
-## Security upgrades included
+1. Upload project to: `~/xui-portal/`
+2. Set web root to: `~/xui-portal/public` (or copy only `public/*` into `public_html`)
+3. Create `~/xui-portal/.env` from `.env.example`
+4. Make sure these are writable:
+   - `~/xui-portal/tmp/`
+   - `~/xui-portal/data/tickets/`
+5. Keep `src/` and `.env` **outside public_html** whenever possible.
 
-- CSRF protection + secure session cookie flags.
-- Security headers: CSP, X-Frame-Options, nosniff, no-referrer.
-- Optional access key gate for hidden login (`ACCESS_KEY`).
-- Basic login rate limiting per IP.
-- Password hash support (`ADMIN_PASSWORD_HASH`, `USER_PASSWORD_HASH`).
-- TLS verification enabled for API and RSS fetch requests.
+## If you must use `public_html`
 
-## Quick start
+- Upload `public/.htaccess` to `public_html/.htaccess`.
+- Move sensitive files (`.env`, `src/`, `data/`, `tmp/`) outside `public_html` if your host allows.
+- If not possible, deny access using `.htaccess` rules.
 
-1. `cp .env.example .env`
-2. Set strong values.
-3. Serve `public/` as web root.
-4. Configure hidden portal rewrite to `/portal.php`.
+## Features
 
-## Ticket flow
+- Hidden portal login (`portal.php` + optional `ACCESS_KEY`)
+- Admin page for x-ui actions
+- User subscription check page
+- Node status/load-balance view
+- Per-user offline tickets in `data/tickets/<user_id>.jsonl`
+- Modern dark/night UI
+- Telegram support contact in ticket page (`https://t.me/imKoris`)
 
-- User opens `/ticket.php` and submits message.
-- Tickets are stored per user in `data/tickets/<user_id>.jsonl`.
-- Admin reads tickets at `/tickets.php` and can filter by user id.
+## cPanel notes
 
-## Note
+- `cfg()` now also reads `getenv()` so you can configure values in cPanel environment settings.
+- Session files are stored under `tmp/sessions` automatically.
+- Use cron jobs in cPanel later if you want cleanup/report tasks.
 
-For production, use reverse proxy rate-limits, WAF, firewall allow-list, and monitor logs.
-
-
-## Local preview
-
-Yes. You can preview locally with PHP built-in server:
+## Local preview (optional)
 
 ```bash
 cp .env.example .env
 ./preview.sh 8080
 ```
-
-Then open:
-
-- `http://127.0.0.1:8080/` (fake public page)
-- `http://127.0.0.1:8080/portal.php` (hidden portal entry; add `?k=...` if `ACCESS_KEY` is enabled)
-- `http://127.0.0.1:8080/ticket.php` (offline ticket form)
-
-
-
-## Ticket storage model
-
-Tickets are stored **per user id** under `data/tickets/<user_id>.jsonl`. Admin can filter tickets by `user_id` in `/tickets.php`.
-
-## UI
-
-All pages now use a modern dark/night style via `public/assets/style.css`.
-
-## Telegram
-
-Support contact is displayed in ticket page: `https://t.me/imKoris`.
