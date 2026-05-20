@@ -1,0 +1,25 @@
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# Hidden login route (change slug in .env HIDDEN_PATH)
+RewriteCond %{REQUEST_URI} ^/portal-7f9a$ [NC]
+RewriteRule ^ /portal.php [L,QSA]
+
+# Front controller fallback
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [L]
+</IfModule>
+
+# Block accidental access to sensitive files
+<FilesMatch "^(\.env|\.git|composer\.(json|lock)|README\.md)$">
+  Require all denied
+</FilesMatch>
+
+<IfModule mod_headers.c>
+Header always set X-Frame-Options "DENY"
+Header always set X-Content-Type-Options "nosniff"
+Header always set Referrer-Policy "no-referrer"
+</IfModule>
